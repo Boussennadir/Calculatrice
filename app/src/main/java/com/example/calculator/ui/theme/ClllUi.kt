@@ -1,18 +1,9 @@
 package com.example.calculator.ui.theme
 
-
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,184 +11,225 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.calculator.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Calculatrice(modifier : Modifier = Modifier) {
+fun Calculatrice(modifier: Modifier = Modifier) {
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
-
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(10.dp)
+Column {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(16.dp)
     ) {
-        Box(modifier.fillMaxWidth().height(200.dp)) {
-                TextField(
-                    value = if (result.isNotEmpty()) result else input,
-                    onValueChange = {} ,
-                    readOnly = true ,
-                    modifier = Modifier.fillMaxSize()
-                )
-        }
+        TextField(
+            value = if (result.isNotEmpty()) result else input ,
+            onValueChange = {} ,
+            readOnly = true ,
+            textStyle = TextStyle(fontSize = 48.sp , color = Color.Black) ,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp) ,
+            singleLine = true ,
+            enabled = false ,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White ,
+                disabledTextColor = Color.Black ,
+                disabledLabelColor = Color.Transparent
+            )
+        )
+    }
+    Spacer(modifier.height(10.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp) ,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+
+        // Display the input or result
+
+
+        // Calculator buttons
         Column(
             modifier = Modifier
-                .padding(8.dp)
                 .fillMaxWidth() ,
-            verticalArrangement = Arrangement.Bottom ,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // First row (AC, %, /, ×)
             Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth() ,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth() ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Button(
-                    onClick = {
-                        input=""
-                        result=""
-                }) {
-                    Text(text = "AC")
-                }
-
-                Button(onClick = {input+=""}) {
-                    Text(text = "%")
-                }
-
-                Button(onClick = {input=input.dropLast(1)}) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.backspace_24dp_5f6368) ,
-                        contentDescription = ""
-                    )
-                }
-
-                Button(onClick = {input+="÷"}) {
-                    Text(text = "÷")
-                }
-
+                CalculatorButton(
+                    text = "AC" ,
+                    onClick = { input = ""; result = "" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "%" ,
+                    onClick = { input += "%" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "/" ,
+                    onClick = { input += "/" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "×" ,
+                    onClick = { input += "*" } ,
+                    modifier = Modifier.weight(1f)
+                )
             }
+
+            // Second row (7, 8, 9, -)
             Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth() , horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth() ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                Button(onClick = {input+="7"}) {
-                    Text(text = "7")
-                }
-
-
-                Button(onClick = {input+="8"}) {
-                    Text(text = "8")
-                }
-
-
-                Button(onClick = {input+="9"}) {
-                    Text(text = "9")
-                }
-
-
-                Button(onClick = {input+="x"}) {
-                    Text(text = "x")
-                }
-
+                CalculatorButton(
+                    text = "7" ,
+                    onClick = { input += "7" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "8" ,
+                    onClick = { input += "8" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "9" ,
+                    onClick = { input += "9" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "-" ,
+                    onClick = { input += "-" } ,
+                    modifier = Modifier.weight(1f)
+                )
             }
+
+            // Third row (4, 5, 6, +)
             Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth() , horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth() ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                Button(onClick = {input+="4"}) {
-                    Text(text = "4")
-                }
-
-
-                Button(onClick = {input+="5"}) {
-                    Text(text = "5")
-                }
-
-
-                Button(onClick = {input+="6"}) {
-                    Text(text = "6")
-                }
-
-                Button(onClick = {input+="-"}) {
-                    Text(text = "-")
-                }
-
+                CalculatorButton(
+                    text = "4" ,
+                    onClick = { input += "4" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "5" ,
+                    onClick = { input += "5" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "6" ,
+                    onClick = { input += "6" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "+" ,
+                    onClick = { input += "+" } ,
+                    modifier = Modifier.weight(1f)
+                )
             }
+
+            // Fourth row (1, 2, 3, =)
             Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth() , horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth() ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                Button(onClick = {input+="1"}) {
-                    Text(text = "1")
-                }
-
-
-                Button(onClick = {input+="2"}) {
-                    Text(text = "2")
-                }
-
-
-                Button(onClick = {input+="3"}) {
-                    Text(text = "3")
-                }
-
-
-                Button(onClick = {input+="+"}) {
-                    Text(text = "+")
-                }
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth() , horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(onClick = {input+="00"}) {
-                    Text(text = "00")
-                }
-
-                Button(onClick = {input+="0"}) {
-                    Text(text = "0")
-                }
-
-
-                Button(onClick = {input+="."}) {
-                    Text(text = ".")
-
-                }
-
-                Button(onClick = {
-                    val expression = input.replace("x", "*").replace("÷", "/")
+                CalculatorButton(
+                    text = "1" ,
+                    onClick = { input += "1" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "2" ,
+                    onClick = { input += "2" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(
+                    text = "3" ,
+                    onClick = { input += "3" } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(text = "=" , onClick = {
+                    val expression = input.replace("×" , "*").replace("/" , "/")
                     try {
                         val calculatedResult = evaluateExpression(expression)
                         result = calculatedResult.toString()
-                    } catch (e: Exception) {
+                    } catch (e : Exception) {
                         result = "Error"
                     }
-                }) {
-                    Text(text = "=")
-                }
-
+                } , modifier = Modifier.weight(1f))
             }
 
+            // Fifth row (0, ., +/-, ±)
+            Row(
+                modifier = Modifier.fillMaxWidth() ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                CalculatorButton(
+                    text = "0" ,
+                    onClick = { input += "0" } ,
+                    modifier = Modifier.weight(2f)
+                )
+                CalculatorButton(
+                    text = "." ,
+                    onClick = { input += "." } ,
+                    modifier = Modifier.weight(1f)
+                )
+                CalculatorButton(text = "±" , onClick = {
+                    if (input.isNotEmpty() && input[0] == '-') {
+                        input = input.drop(1)
+                    } else {
+                        input = "-$input"
+                    }
+                } , modifier = Modifier.weight(1f))
+            }
         }
     }
 }
+}
 
+@Composable
+fun CalculatorButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .height(80.dp)
+            .fillMaxWidth()
+            .padding(0.dp),
+        shape = RoundedCornerShape(CornerSize(40.dp)),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFf0f0f5)),
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(fontSize = 28.sp, color = Color.Black)
+        )
+    }
+}
+
+// Expression evaluation logic
 private fun evaluateExpression(expression: String): Double {
-    // Implement your expression evaluation logic here
-    // You can use a library like "kotlinx-math" or write your own parser
-    // For a simple example, you could use a basic approach:
-
     var result = 0.0
     var currentNumber = ""
     var currentOperator = '+'
@@ -229,5 +261,3 @@ private fun evaluateExpression(expression: String): Double {
 
     return result
 }
-
-
